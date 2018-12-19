@@ -4,7 +4,6 @@ import expect from 'expect';
 import fs from 'fs';
 import path from 'path';
 import Slate from 'slate';
-import { KeyUtils } from 'slate'
 import hyperprint from 'slate-hyperprint';
 import EditCode from '../lib';
 
@@ -31,7 +30,7 @@ describe('slate-edit-code', () => {
         if (test[0] === '.' || path.extname(test).length > 0) return;
 
         it(test, () => {
-            KeyUtils.resetGenerator();
+            Slate.KeyUtils.resetGenerator();
             const dir = path.resolve(__dirname, test);
             const input = require(path.resolve(dir, 'input.js')).default;
             const expectedPath = path.resolve(dir, 'expected.js');

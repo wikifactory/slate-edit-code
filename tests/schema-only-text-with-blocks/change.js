@@ -1,6 +1,4 @@
-import Slate from 'slate';
-
-export default function(plugin, change) {
-    const schema = new Slate.Schema(plugin.schema);
-    return change.normalize(schema);
+export default function(plugin, editor) {
+    const schema = plugin.schema;
+    return editor.normalize(schema);
 }

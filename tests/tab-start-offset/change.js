@@ -9,5 +9,5 @@ export default function(plugin, editor) {
     editor.moveToStartOfNode(block).moveAnchorTo(0);
     editor.moveFocusTo(0);
 
-    return plugin.onKeyDown(simulateKey('tab'), editor, {});
+    return editor.run('onKeyDown', simulateKey('tab'));
 }

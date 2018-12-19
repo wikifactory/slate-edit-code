@@ -1,9 +1,9 @@
 import assert from 'assert';
 
-export default function(plugin, change) {
-    plugin.changes.wrapCodeBlock(change);
+export default function(plugin, editor) {
+    plugin.changes.wrapCodeBlock(editor);
 
-    assert.equal(change.value.startOffset, 5);
+    assert.equal(editor.value.startOffset, 5);
 
-    return change;
+    return editor;
 }
