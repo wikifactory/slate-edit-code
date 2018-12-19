@@ -1,4 +1,4 @@
-import { createHyperscript } from '@gitbook/slate-hyperscript';
+import { createHyperscript } from 'slate-hyperscript';
 
 const h = createHyperscript({
     blocks: {

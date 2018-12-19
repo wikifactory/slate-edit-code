@@ -3,14 +3,15 @@
 import expect from 'expect';
 import fs from 'fs';
 import path from 'path';
-import Slate from '@gitbook/slate';
+import Slate from 'slate';
+import { KeyUtils } from 'slate'
 import hyperprint from 'slate-hyperprint';
 import EditCode from '../lib';
 
 const PLUGIN = EditCode();
-const SCHEMA = Slate.Schema.create({
+const SCHEMA = {
     plugins: [PLUGIN]
-});
+};
 
 function deserializeValue(value) {
     return Slate.Value.fromJSON(
@@ -30,7 +31,7 @@ describe('slate-edit-code', () => {
         if (test[0] === '.' || path.extname(test).length > 0) return;
 
         it(test, () => {
-            Slate.resetKeyGenerator();
+            KeyUtils.resetGenerator();
             const dir = path.resolve(__dirname, test);
             const input = require(path.resolve(dir, 'input.js')).default;
             const expectedPath = path.resolve(dir, 'expected.js');
@@ -40,11 +41,15 @@ describe('slate-edit-code', () => {
             const runChange = require(path.resolve(dir, 'change.js')).default;
 
             const valueInput = deserializeValue(input);
+            const editorInput = new Slate.Editor({
+                plugins: [PLUGIN],
+                value: valueInput
+            });
 
-            const newChange = runChange(PLUGIN, valueInput.change());
+            runChange(PLUGIN, editorInput);
 
             if (expected) {
-                const newDoc = hyperprint(newChange.value.document, {
+                const newDoc = hyperprint(editorInput.value.document, {
                     strict: true
                 });
                 expect(newDoc).toEqual(

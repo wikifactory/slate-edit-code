@@ -1,12 +1,13 @@
 import simulateKey from '../simulate-key';
 
-export default function(plugin, change) {
-    const { value } = change;
+export default function(plugin, editor) {
+    const { value } = editor;
     const block = value.document.findDescendant(
         node => node.type == 'code_block'
     );
 
-    change.collapseToStartOf(block).moveOffsetsTo(0);
+    editor.moveToStartOfNode(block).moveAnchorTo(0);
+    editor.moveFocusTo(0);
 
-    return plugin.onKeyDown(simulateKey('tab'), change, {});
+    return plugin.onKeyDown(simulateKey('tab'), editor, {});
 }
