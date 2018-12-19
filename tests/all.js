@@ -13,14 +13,11 @@ const SCHEMA = {
 };
 
 function deserializeValue(value) {
-    return Slate.Value.fromJSON(
-        {
-            document: value.document,
-            selection: value.selection,
-            schema: SCHEMA
-        },
-        { normalize: false }
-    );
+    return Slate.Value.fromJSON({
+        document: value.document,
+        selection: value.selection,
+        schema: SCHEMA
+    });
 }
 
 describe('slate-edit-code', () => {
