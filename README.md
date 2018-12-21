@@ -1,19 +1,14 @@
-# slate-edit-code
+# @wikifactory/slate-edit-code
 
-[![NPM version](https://badge.fury.io/js/slate-edit-code.svg)](http://badge.fury.io/js/slate-edit-code)
-[![Linux Build Status](https://travis-ci.org/GitbookIO/slate-edit-code.png?branch=master)](https://travis-ci.org/GitbookIO/slate-edit-code)
+[![NPM version](https://badge.fury.io/js/%40wikifactory%2Fslate-edit-code.svg)](http://badge.fury.io/js/%40wikifactory%2Fslate-edit-code)
+[![Linux Build Status](https://travis-ci.org/wikifactory/slate-edit-code.png?branch=master)](https://travis-ci.org/wikifactory/slate-edit-code)
 
 A Slate plugin to handle code block editing.
-
-> ⚠️  This repository is now using GitBook's fork of [ianstormtaylor/slate](https://github.com/ianstormtaylor/slate).
-> Previous versions are still [available on NPM](https://www.npmjs.com/package/slate-edit-code)
-> All the versions using GitBook's fork of slate are now published under the `@gitbook` NPM scope.
-> To learn more about why we forked Slate, read [our manifest](https://github.com/GitbookIO/slate/blob/master/Readme.md)
 
 ### Install
 
 ```js
-npm install slate-edit-code
+npm install @wikifactory/slate-edit-code
 ```
 
 ### Features
@@ -55,7 +50,7 @@ const plugins = [
 - `containerType = 'code_block' : string` — The type of the code containers
 - `lineType = 'code_line' : string` — The type of the code lines
 - `exitBlockType = 'paragraph' : null | string` — <kbd>Mod+Enter</kbd> will exit the code container, into the given block type. Backspace at start of an empty code container will convert it to the given block type. Pass `null` to disable this behavior.
-- `onExit: (Change) => void | Change` — Change to do when the user hits <kbd>Mod+Enter</kbd>. Defaults to exiting the code block, into a new `exitBlockType` block.
+- `onExit: (Editor) => void | Editor` — Change to do when the user hits <kbd>Mod+Enter</kbd>. Defaults to exiting the code block, into a new `exitBlockType` block.
 - `selectAll = true : boolean` — True to select all code inside a code container on <kbd>Mod+A</kbd>
 - `allowMarks = false : boolean` —  False disallow marks in code blocks by normalizing them away.
 - `getIndent: (Value) => string` — Returns the indent unit as a string. The current value is passed as context.
@@ -67,7 +62,7 @@ Some behavior implemented by this plugins have no corresponding option. While th
 The following example disable all indent behavior
 
 ```js
-import EditCode from 'slate-edit-code'
+import EditCode from '@wikifactory/slate-edit-code'
 
 const options = { ... };
 
@@ -75,12 +70,12 @@ const basePlugin = EditCode(options);
 
 const customPlugin = {
   ...basePlugin,
-  onKeyDown(event, change, editor) {
+  onKeyDown(event, editor, next) {
     if (event.key === 'Tab') {
       // Bypass the original plugin behavior on `Tab`
-      return;
+      return ...;
     } else {
-      return basePlugin.onKeyDown(event, change, editor);
+      return basePlugin.onKeyDown(event, editor, next);
     }
   }
 }
@@ -90,7 +85,7 @@ const customPlugin = {
 
 ### Utilities and Changes
 
-`slate-edit-code` exports utilities, accessible like so:
+`@wikifactory/slate-edit-code` exports utilities, accessible like so:
 
 ``` js
 const plugin = EditCode()
@@ -108,29 +103,29 @@ Split a text string into lines, and deserialize them to a `code_container` `Bloc
 
 #### `changes.toggleCodeBlock`
 
-`plugin.changes.toggleCodeBlock(change: Change, type: String) => Change`
+`plugin.changes.toggleCodeBlock(editor: Editor, type: String) => Editor`
 
 Toggle a block into a code block or a normal block (defined by `type`).
 
 #### `changes.wrapCodeBlockByKey`
 
-`plugin.changes.wrapCodeBlockByKey(change: Change, key: String) => Change`
+`plugin.changes.wrapCodeBlockByKey(editor: Editor, key: String) => Editor`
 
 Convert a block (paragraph, etc) into a code block.
 
 #### `changes.wrapCodeBlock`
 
-`plugin.changes.wrapCodeBlock(change: Change) => Change`
+`plugin.changes.wrapCodeBlock(editor: Editor) => Editor`
 
 Convert current block (paragraph, etc) into a code block.
 
 #### `changes.unwrapCodeBlockByKey`
-`plugin.changes.unwrapCodeBlockByKey(change: Change, key: String, type: String) => Change`
+`plugin.changes.unwrapCodeBlockByKey(editor: Editor, key: String, type: String) => Editor`
 
 Convert a code block into a normal block (paragraph, etc).
 
 #### `changes.unwrapCodeBlock`
 
-`plugin.changes.unwrapCodeBlock(change: Change, type: String) => Change`
+`plugin.changes.unwrapCodeBlock(editor: Editor, type: String) => Editor`
 
 Convert current code block into a normal block (paragraph, etc).
